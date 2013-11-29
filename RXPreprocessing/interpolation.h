@@ -15,7 +15,7 @@
  */
 
 #define rx_q(...) \
-	([@[rx_fold(_rx_q_format_each, @"", __VA_ARGS__)] componentsJoinedByString:@""])
+    ([NSString stringWithFormat:rx_fold(_rx_q_format_each2, @"", __VA_ARGS__), __VA_ARGS__])
 
 
 /**
@@ -45,6 +45,9 @@
 #define RXLog(...) \
 	NSLog(@"%@", rx_q(__VA_ARGS__))
 
+#define _rx_q_format_each2(memo, each) _rx_q_format_specifier(each) memo
+#define _rx_q_format_specifier(x) _Generic((x), int32_t: @"%i", \
+                                                id: @"%@")
 
 __attribute__((overloadable)) static inline NSString *_rx_format_type_specifier_for_value(NSUInteger x) { return @"lu"; }
 __attribute__((overloadable)) static inline NSString *_rx_format_type_specifier_for_value(NSInteger x) { return @"li"; }
